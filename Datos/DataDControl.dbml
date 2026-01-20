@@ -1,0 +1,634 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="SistemaAvicola" Class="DataDControlDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=DESKTOP-I48SVL7;Initial Catalog=SistemaAvicola;Integrated Security=True;Encrypt=True;Trust Server Certificate=True" SettingsObjectName="Datos.Properties.Settings" SettingsPropertyName="SistemaAvicolaConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.BitacoraDiaria" Member="BitacoraDiaria">
+    <Type Name="BitacoraDiaria">
+      <Column Name="IdBitacora" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="IdEmpleado" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="IdLote" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Fecha" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Mortalidad" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AlimentoConsumido" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
+      <Column Name="PesoPromedio" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
+      <Column Name="Observaciones" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Association Name="Empleado_BitacoraDiaria" Member="Empleado" ThisKey="IdEmpleado" OtherKey="IdEmpleado" Type="Empleado" IsForeignKey="true" />
+      <Association Name="Lote_BitacoraDiaria" Member="Lote" ThisKey="IdLote" OtherKey="IdLote" Type="Lote" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Cargo" Member="Cargo">
+    <Type Name="Cargo">
+      <Column Name="IdCargo" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="NombreCargo" Type="System.String" DbType="VarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="Descripcion" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="Cargo_Empleado" Member="Empleado" ThisKey="IdCargo" OtherKey="IdCargo" Type="Empleado" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Cliente" Member="Cliente">
+    <Type Name="Cliente">
+      <Column Name="IdCliente" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="RazonSocial" Type="System.String" DbType="VarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="Cedula" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Ciudad" Type="System.String" DbType="VarChar(15) NOT NULL" CanBeNull="false" />
+      <Column Name="Direccion" Type="System.String" DbType="VarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="Telefono" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Association Name="Cliente_Venta" Member="Venta" ThisKey="IdCliente" OtherKey="IdCliente" Type="Venta" />
+    </Type>
+  </Table>
+  <Table Name="dbo.DetalleVenta" Member="DetalleVenta">
+    <Type Name="DetalleVenta">
+      <Column Name="IdDetalle" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="IdVenta" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="IdProducto" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CantidadVendida" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PrecioUnitario" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
+      <Column Name="Subtotal" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
+      <Association Name="Lote_Faenado_DetalleVenta" Member="Lote_Faenado" ThisKey="IdProducto" OtherKey="IdProducto" Type="Lote_Faenado" IsForeignKey="true" />
+      <Association Name="Venta_DetalleVenta" Member="Venta" ThisKey="IdVenta" OtherKey="IdVenta" Type="Venta" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Empleado" Member="Empleado">
+    <Type Name="Empleado">
+      <Column Name="IdEmpleado" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="IdCargo" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Cedula" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Nombre" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Apellido" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Ciudad" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Direccion" Type="System.String" DbType="VarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="Telefono" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Correo" Type="System.String" DbType="VarChar(30) NOT NULL" CanBeNull="false" />
+      <Association Name="Empleado_BitacoraDiaria" Member="BitacoraDiaria" ThisKey="IdEmpleado" OtherKey="IdEmpleado" Type="BitacoraDiaria" />
+      <Association Name="Empleado_Orden_Faenado" Member="Orden_Faenado" ThisKey="IdEmpleado" OtherKey="IdEmpleado" Type="Orden_Faenado" />
+      <Association Name="Empleado_Venta" Member="Venta" ThisKey="IdEmpleado" OtherKey="IdEmpleado" Type="Venta" />
+      <Association Name="Empleado_Camion" Member="Camion" ThisKey="IdEmpleado" OtherKey="IdEmpleado" Type="Camion" />
+      <Association Name="Cargo_Empleado" Member="Cargo" ThisKey="IdCargo" OtherKey="IdCargo" Type="Cargo" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Galpon" Member="Galpon">
+    <Type Name="Galpon">
+      <Column Name="IdGalpon" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Nombre" Type="System.String" DbType="VarChar(15) NOT NULL" CanBeNull="false" />
+      <Column Name="CapacidadMaxima" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Ubicacion" Type="System.String" DbType="VarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="Estado" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Association Name="Galpon_Lote" Member="Lote" ThisKey="IdGalpon" OtherKey="IdGalpon" Type="Lote" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Lote" Member="Lote">
+    <Type Name="Lote">
+      <Column Name="IdLote" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="IdGalpon" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IdRaza" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Codigo" Type="System.String" DbType="VarChar(15) NOT NULL" CanBeNull="false" />
+      <Column Name="FechaIIngreso" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="CantidadInicial" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CostoInicial" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
+      <Column Name="Estado" Type="System.String" DbType="VarChar(15) NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="StockActual" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Lote_BitacoraDiaria" Member="BitacoraDiaria" ThisKey="IdLote" OtherKey="IdLote" Type="BitacoraDiaria" />
+      <Association Name="Lote_Orden_Faenado" Member="Orden_Faenado" ThisKey="IdLote" OtherKey="IdLote" Type="Orden_Faenado" />
+      <Association Name="Galpon_Lote" Member="Galpon" ThisKey="IdGalpon" OtherKey="IdGalpon" Type="Galpon" IsForeignKey="true" />
+      <Association Name="RazaAve_Lote" Member="RazaAve" ThisKey="IdRaza" OtherKey="IdRaza" Type="RazaAve" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Lote_Faenado" Member="Lote_Faenado">
+    <Type Name="Lote_Faenado">
+      <Column Name="IdProducto" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="IdOrden" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Cantidad" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PesoTotal" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
+      <Column Name="FechaVencimiento" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="StockActual" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Lote_Faenado_DetalleVenta" Member="DetalleVenta" ThisKey="IdProducto" OtherKey="IdProducto" Type="DetalleVenta" />
+      <Association Name="Orden_Faenado_Lote_Faenado" Member="Orden_Faenado" ThisKey="IdOrden" OtherKey="IdOrden" Type="Orden_Faenado" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Orden_Faenado" Member="Orden_Faenado">
+    <Type Name="Orden_Faenado">
+      <Column Name="IdOrden" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="IdLote" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="IdEmpleado" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="FechaFaena" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="AvesProcesadas" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PesoVivoTotal" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
+      <Association Name="Orden_Faenado_Lote_Faenado" Member="Lote_Faenado" ThisKey="IdOrden" OtherKey="IdOrden" Type="Lote_Faenado" />
+      <Association Name="Empleado_Orden_Faenado" Member="Empleado" ThisKey="IdEmpleado" OtherKey="IdEmpleado" Type="Empleado" IsForeignKey="true" />
+      <Association Name="Lote_Orden_Faenado" Member="Lote" ThisKey="IdLote" OtherKey="IdLote" Type="Lote" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.RazaAve" Member="RazaAve">
+    <Type Name="RazaAve">
+      <Column Name="IdRaza" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Nombre" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Origen" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="Descripcion" Type="System.String" DbType="VarChar(30) NOT NULL" CanBeNull="false" />
+      <Association Name="RazaAve_Lote" Member="Lote" ThisKey="IdRaza" OtherKey="IdRaza" Type="Lote" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Usuarios" Member="Usuarios">
+    <Type Name="Usuarios">
+      <Column Name="IdUsuario" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="NombreLogin" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Password" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="NombreCompleto" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Venta" Member="Venta">
+    <Type Name="Venta">
+      <Column Name="IdVenta" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="IdCliente" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="IdCamion" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="IdEmpleado" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="NumeroFactura" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Fecha" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="TotalVenta" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
+      <Column Name="Estado" Type="System.String" DbType="VarChar(15) NOT NULL" CanBeNull="false" />
+      <Association Name="Venta_DetalleVenta" Member="DetalleVenta" ThisKey="IdVenta" OtherKey="IdVenta" Type="DetalleVenta" />
+      <Association Name="Cliente_Venta" Member="Cliente" ThisKey="IdCliente" OtherKey="IdCliente" Type="Cliente" IsForeignKey="true" />
+      <Association Name="Empleado_Venta" Member="Empleado" ThisKey="IdEmpleado" OtherKey="IdEmpleado" Type="Empleado" IsForeignKey="true" />
+      <Association Name="Camion_Venta" Member="Camion" ThisKey="IdCamion" OtherKey="IdCamion" Type="Camion" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Camion" Member="Camion">
+    <Type Name="Camion">
+      <Column Name="IdCamion" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="IdEmpleado" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Placa" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Marca" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="CapacidadKG" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
+      <Association Name="Camion_Venta" Member="Venta" ThisKey="IdCamion" OtherKey="IdCamion" Type="Venta" />
+      <Association Name="Empleado_Camion" Member="Empleado" ThisKey="IdEmpleado" OtherKey="IdEmpleado" Type="Empleado" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Function Name="dbo.CP_EliminarBitacora" Method="CP_EliminarBitacora">
+    <Parameter Name="IdBitacora" Parameter="idBitacora" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.CP_ModificarVenta" Method="CP_ModificarVenta">
+    <Parameter Name="IdVenta" Parameter="idVenta" Type="System.Int32" DbType="Int" />
+    <Parameter Name="IdCliente" Parameter="idCliente" Type="System.Int32" DbType="Int" />
+    <Parameter Name="IdCamion" Parameter="idCamion" Type="System.Int32" DbType="Int" />
+    <Parameter Name="IdEmpleado" Parameter="idEmpleado" Type="System.Int32" DbType="Int" />
+    <Parameter Name="NroFac" Parameter="nroFac" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="Fecha" Parameter="fecha" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="TotalVenta" Parameter="totalVenta" Type="System.Decimal" DbType="Decimal(10,2)" />
+    <Parameter Name="Estado" Parameter="estado" Type="System.String" DbType="VarChar(15)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.CP_EliminarCamion" Method="CP_EliminarCamion">
+    <Parameter Name="IdCamion" Parameter="idCamion" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.CP_EliminarCargo" Method="CP_EliminarCargo">
+    <Parameter Name="IdCargo" Parameter="idCargo" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.CP_EliminarCliente" Method="CP_EliminarCliente">
+    <Parameter Name="IdCliente" Parameter="idCliente" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.CP_EliminarDetalleVenta" Method="CP_EliminarDetalleVenta">
+    <Parameter Name="IdDetalle" Parameter="idDetalle" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.CP_EliminarEmpleado" Method="CP_EliminarEmpleado">
+    <Parameter Name="IdEmpleado" Parameter="idEmpleado" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.CP_EliminarGalpon" Method="CP_EliminarGalpon">
+    <Parameter Name="IdGalpon" Parameter="idGalpon" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.CP_EliminarLote" Method="CP_EliminarLote">
+    <Parameter Name="IdLote" Parameter="idLote" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.CP_EliminarLoteFaenado" Method="CP_EliminarLoteFaenado">
+    <Parameter Name="IdProducto" Parameter="idProducto" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.CP_EliminarOrdenFaenado" Method="CP_EliminarOrdenFaenado">
+    <Parameter Name="IdOrden" Parameter="idOrden" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.CP_EliminarRazaAve" Method="CP_EliminarRazaAve">
+    <Parameter Name="IdRaza" Parameter="idRaza" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.CP_EliminarVenta" Method="CP_EliminarVenta">
+    <Parameter Name="IdVenta" Parameter="idVenta" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.CP_InsertarBitacora" Method="CP_InsertarBitacora">
+    <Parameter Name="IdBitacora" Parameter="idBitacora" Type="System.Int32" DbType="Int" />
+    <Parameter Name="IdEmpleado" Parameter="idEmpleado" Type="System.Int32" DbType="Int" />
+    <Parameter Name="IdLote" Parameter="idLote" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Fecha" Parameter="fecha" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="Mortalidad" Parameter="mortalidad" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Alimento" Parameter="alimento" Type="System.Decimal" DbType="Decimal(10,2)" />
+    <Parameter Name="PesoPromedio" Parameter="pesoPromedio" Type="System.Decimal" DbType="Decimal(10,2)" />
+    <Parameter Name="Observaciones" Parameter="observaciones" Type="System.String" DbType="VarChar(10)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.CP_InsertarCamion" Method="CP_InsertarCamion">
+    <Parameter Name="IdCamion" Parameter="idCamion" Type="System.Int32" DbType="Int" />
+    <Parameter Name="IdEmpleado" Parameter="idEmpleado" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Placa" Parameter="placa" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="Marca" Parameter="marca" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="Capacidad" Parameter="capacidad" Type="System.Decimal" DbType="Decimal(10,2)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.CP_InsertarCargo" Method="CP_InsertarCargo">
+    <Parameter Name="IdCargo" Parameter="idCargo" Type="System.Int32" DbType="Int" />
+    <Parameter Name="NombreCargo" Parameter="nombreCargo" Type="System.String" DbType="VarChar(30)" />
+    <Parameter Name="Descripcion" Parameter="descripcion" Type="System.String" DbType="VarChar(50)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.CP_InsertarCliente" Method="CP_InsertarCliente">
+    <Parameter Name="IdCliente" Parameter="idCliente" Type="System.Int32" DbType="Int" />
+    <Parameter Name="RazonSocial" Parameter="razonSocial" Type="System.String" DbType="VarChar(30)" />
+    <Parameter Name="Cedula" Parameter="cedula" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="Ciudad" Parameter="ciudad" Type="System.String" DbType="VarChar(15)" />
+    <Parameter Name="Direccion" Parameter="direccion" Type="System.String" DbType="VarChar(30)" />
+    <Parameter Name="Telefono" Parameter="telefono" Type="System.String" DbType="VarChar(10)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.CP_InsertarDetalleVenta" Method="CP_InsertarDetalleVenta">
+    <Parameter Name="IdDetalle" Parameter="idDetalle" Type="System.Int32" DbType="Int" />
+    <Parameter Name="IdVenta" Parameter="idVenta" Type="System.Int32" DbType="Int" />
+    <Parameter Name="IdProducto" Parameter="idProducto" Type="System.Int32" DbType="Int" />
+    <Parameter Name="CantVendida" Parameter="cantVendida" Type="System.Int32" DbType="Int" />
+    <Parameter Name="PrecioUnitario" Parameter="precioUnitario" Type="System.Decimal" DbType="Decimal(10,2)" />
+    <Parameter Name="Subtotal" Parameter="subtotal" Type="System.Decimal" DbType="Decimal(10,2)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.CP_InsertarEmpleado" Method="CP_InsertarEmpleado">
+    <Parameter Name="IdEmpleado" Parameter="idEmpleado" Type="System.Int32" DbType="Int" />
+    <Parameter Name="IdCargo" Parameter="idCargo" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Cedula" Parameter="cedula" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="Nombre" Parameter="nombre" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="Apellido" Parameter="apellido" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="Ciudad" Parameter="ciudad" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="Direccion" Parameter="direccion" Type="System.String" DbType="VarChar(30)" />
+    <Parameter Name="Telefono" Parameter="telefono" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="Correo" Parameter="correo" Type="System.String" DbType="VarChar(30)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.CP_InsertarGalpon" Method="CP_InsertarGalpon">
+    <Parameter Name="IdGalpon" Parameter="idGalpon" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Nombre" Parameter="nombre" Type="System.String" DbType="VarChar(15)" />
+    <Parameter Name="Capacidad" Parameter="capacidad" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Ubicacion" Parameter="ubicacion" Type="System.String" DbType="VarChar(30)" />
+    <Parameter Name="Estado" Parameter="estado" Type="System.String" DbType="VarChar(20)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.CP_InsertarLote" Method="CP_InsertarLote">
+    <Parameter Name="IdLote" Parameter="idLote" Type="System.Int32" DbType="Int" />
+    <Parameter Name="IdGalpon" Parameter="idGalpon" Type="System.Int32" DbType="Int" />
+    <Parameter Name="IdRaza" Parameter="idRaza" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Codigo" Parameter="codigo" Type="System.String" DbType="VarChar(15)" />
+    <Parameter Name="FechaIngreso" Parameter="fechaIngreso" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="CantInicial" Parameter="cantInicial" Type="System.Int32" DbType="Int" />
+    <Parameter Name="CosInicial" Parameter="cosInicial" Type="System.Decimal" DbType="Decimal(10,2)" />
+    <Parameter Name="Estado" Parameter="estado" Type="System.String" DbType="VarChar(15)" />
+    <Parameter Name="StockActual" Parameter="stockActual" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.CP_InsertarLoteFaenado" Method="CP_InsertarLoteFaenado">
+    <Parameter Name="IdProducto" Parameter="idProducto" Type="System.Int32" DbType="Int" />
+    <Parameter Name="IdOrden" Parameter="idOrden" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Cantidad" Parameter="cantidad" Type="System.Int32" DbType="Int" />
+    <Parameter Name="PesoTotal" Parameter="pesoTotal" Type="System.Decimal" DbType="Decimal(10,2)" />
+    <Parameter Name="FechaVencimiento" Parameter="fechaVencimiento" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="StockActual" Parameter="stockActual" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.CP_InsertarOrdenFaenado" Method="CP_InsertarOrdenFaenado">
+    <Parameter Name="IdOrden" Parameter="idOrden" Type="System.Int32" DbType="Int" />
+    <Parameter Name="IdLote" Parameter="idLote" Type="System.Int32" DbType="Int" />
+    <Parameter Name="IdEmpleado" Parameter="idEmpleado" Type="System.Int32" DbType="Int" />
+    <Parameter Name="FechaFaena" Parameter="fechaFaena" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="AvesProcesadas" Parameter="avesProcesadas" Type="System.Int32" DbType="Int" />
+    <Parameter Name="PesoVivoTotal" Parameter="pesoVivoTotal" Type="System.Decimal" DbType="Decimal(10,2)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.CP_InsertarRazaAve" Method="CP_InsertarRazaAve">
+    <Parameter Name="IdRaza" Parameter="idRaza" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Nombre" Parameter="nombre" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="Origen" Parameter="origen" Type="System.String" DbType="VarChar(20)" />
+    <Parameter Name="Descripcion" Parameter="descripcion" Type="System.String" DbType="VarChar(30)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.CP_InsertarVenta" Method="CP_InsertarVenta">
+    <Parameter Name="IdVenta" Parameter="idVenta" Type="System.Int32" DbType="Int" />
+    <Parameter Name="IdCliente" Parameter="idCliente" Type="System.Int32" DbType="Int" />
+    <Parameter Name="IdCamion" Parameter="idCamion" Type="System.Int32" DbType="Int" />
+    <Parameter Name="IdEmpleado" Parameter="idEmpleado" Type="System.Int32" DbType="Int" />
+    <Parameter Name="NroFac" Parameter="nroFac" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="Fecha" Parameter="fecha" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="TotalVenta" Parameter="totalVenta" Type="System.Decimal" DbType="Decimal(10,2)" />
+    <Parameter Name="Estado" Parameter="estado" Type="System.String" DbType="VarChar(15)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.CP_ListarBitacora" Method="CP_ListarBitacora">
+    <ElementType Name="CP_ListarBitacoraResult">
+      <Column Name="IdBitacora" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IdEmpleado" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="IdLote" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Fecha" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Mortalidad" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AlimentoConsumido" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
+      <Column Name="PesoPromedio" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
+      <Column Name="Observaciones" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.CP_ListarCamion" Method="CP_ListarCamion">
+    <ElementType Name="CP_ListarCamionResult">
+      <Column Name="IdCamion" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IdEmpleado" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Placa" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Marca" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Capacidad" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.CP_ListarCargo" Method="CP_ListarCargo">
+    <ElementType Name="CP_ListarCargoResult">
+      <Column Name="IdCargo" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="NombreCargo" Type="System.String" DbType="VarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="Descripcion" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.CP_ListarCliente" Method="CP_ListarCliente">
+    <ElementType Name="CP_ListarClienteResult">
+      <Column Name="IdCliente" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="RazonSocial" Type="System.String" DbType="VarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="Cedula" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Ciudad" Type="System.String" DbType="VarChar(15) NOT NULL" CanBeNull="false" />
+      <Column Name="Direccion" Type="System.String" DbType="VarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="Telefono" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.CP_ListarDetalleVenta" Method="CP_ListarDetalleVenta">
+    <ElementType Name="CP_ListarDetalleVentaResult">
+      <Column Name="IdDetalle" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IdVenta" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="IdProducto" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CantidadVendida" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PrecioUnitario" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
+      <Column Name="Subtotal" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.CP_ListarEmpleado" Method="CP_ListarEmpleado">
+    <ElementType Name="CP_ListarEmpleadoResult">
+      <Column Name="IdEmpleado" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IdCargo" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Cedula" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Nombre" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Apellido" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Ciudad" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Direccion" Type="System.String" DbType="VarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="Telefono" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Correo" Type="System.String" DbType="VarChar(30) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.CP_ListarGalpon" Method="CP_ListarGalpon">
+    <ElementType Name="CP_ListarGalponResult">
+      <Column Name="IdGalpon" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Nombre" Type="System.String" DbType="VarChar(15) NOT NULL" CanBeNull="false" />
+      <Column Name="CapacidadMaxima" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Ubicacion" Type="System.String" DbType="VarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="Estado" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.CP_ListarLote" Method="CP_ListarLote">
+    <ElementType Name="CP_ListarLoteResult">
+      <Column Name="IdLote" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IdGalpon" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IdRaza" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Codigo" Type="System.String" DbType="VarChar(15) NOT NULL" CanBeNull="false" />
+      <Column Name="FechaIIngreso" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="CantidadInicial" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CostoInicial" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
+      <Column Name="Estado" Type="System.String" DbType="VarChar(15) NOT NULL" CanBeNull="false" />
+      <Column Name="StockActual" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.CP_ListarLoteFaenado" Method="CP_ListarLoteFaenado">
+    <ElementType Name="CP_ListarLoteFaenadoResult">
+      <Column Name="IdProducto" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IdOrden" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Cantidad" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PesoTotal" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
+      <Column Name="FechaVencimiento" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="StockActual" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.CP_ListarOrden_Faeando" Method="CP_ListarOrden_Faeando">
+    <ElementType Name="CP_ListarOrden_FaeandoResult">
+      <Column Name="IdOrden" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IdLote" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="IdEmpleado" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="FechaFaena" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="AvesProcesadas" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PesoVivoTotal" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.CP_ListarRazaAve" Method="CP_ListarRazaAve">
+    <ElementType Name="CP_ListarRazaAveResult">
+      <Column Name="IdRaza" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Nombre" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Origen" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="Descripcion" Type="System.String" DbType="VarChar(30) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.CP_ListarVenta" Method="CP_ListarVenta">
+    <ElementType Name="CP_ListarVentaResult">
+      <Column Name="IdVenta" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IdCliente" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="IdCamion" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="IdEmpleado" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="NumeroFactura" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Fecha" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="TotalVenta" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
+      <Column Name="Estado" Type="System.String" DbType="VarChar(15) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.CP_ModificarBitacora" Method="CP_ModificarBitacora">
+    <Parameter Name="IdBitacora" Parameter="idBitacora" Type="System.Int32" DbType="Int" />
+    <Parameter Name="IdEmpleado" Parameter="idEmpleado" Type="System.Int32" DbType="Int" />
+    <Parameter Name="IdLote" Parameter="idLote" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Fecha" Parameter="fecha" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="Mortalidad" Parameter="mortalidad" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Alimento" Parameter="alimento" Type="System.Decimal" DbType="Decimal(10,2)" />
+    <Parameter Name="PesoPromedio" Parameter="pesoPromedio" Type="System.Decimal" DbType="Decimal(10,2)" />
+    <Parameter Name="Observaciones" Parameter="observaciones" Type="System.String" DbType="VarChar(10)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.CP_ModificarCargo" Method="CP_ModificarCargo">
+    <Parameter Name="IdCargo" Parameter="idCargo" Type="System.Int32" DbType="Int" />
+    <Parameter Name="NombreCargo" Parameter="nombreCargo" Type="System.String" DbType="VarChar(30)" />
+    <Parameter Name="Descripcion" Parameter="descripcion" Type="System.String" DbType="VarChar(50)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.CP_ModificarCliente" Method="CP_ModificarCliente">
+    <Parameter Name="IdCliente" Parameter="idCliente" Type="System.Int32" DbType="Int" />
+    <Parameter Name="RazonSocial" Parameter="razonSocial" Type="System.String" DbType="VarChar(30)" />
+    <Parameter Name="Cedula" Parameter="cedula" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="Ciudad" Parameter="ciudad" Type="System.String" DbType="VarChar(15)" />
+    <Parameter Name="Direccion" Parameter="direccion" Type="System.String" DbType="VarChar(30)" />
+    <Parameter Name="Telefono" Parameter="telefono" Type="System.String" DbType="VarChar(10)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.CP_ModificarDetalleVenta" Method="CP_ModificarDetalleVenta">
+    <Parameter Name="IdDetalle" Parameter="idDetalle" Type="System.Int32" DbType="Int" />
+    <Parameter Name="IdVenta" Parameter="idVenta" Type="System.Int32" DbType="Int" />
+    <Parameter Name="IdProducto" Parameter="idProducto" Type="System.Int32" DbType="Int" />
+    <Parameter Name="CantVendida" Parameter="cantVendida" Type="System.Int32" DbType="Int" />
+    <Parameter Name="PrecioUnitario" Parameter="precioUnitario" Type="System.Decimal" DbType="Decimal(10,2)" />
+    <Parameter Name="Subtotal" Parameter="subtotal" Type="System.Decimal" DbType="Decimal(10,2)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.CP_ModificarEmpleado" Method="CP_ModificarEmpleado">
+    <Parameter Name="IdEmpleado" Parameter="idEmpleado" Type="System.Int32" DbType="Int" />
+    <Parameter Name="IdCargo" Parameter="idCargo" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Cedula" Parameter="cedula" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="Nombre" Parameter="nombre" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="Apellido" Parameter="apellido" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="Ciudad" Parameter="ciudad" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="Direccion" Parameter="direccion" Type="System.String" DbType="VarChar(30)" />
+    <Parameter Name="Telefono" Parameter="telefono" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="Correo" Parameter="correo" Type="System.String" DbType="VarChar(30)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.CP_ModificarGalpon" Method="CP_ModificarGalpon">
+    <Parameter Name="IdGalpon" Parameter="idGalpon" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Nombre" Parameter="nombre" Type="System.String" DbType="VarChar(15)" />
+    <Parameter Name="Capacidad" Parameter="capacidad" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Ubicacion" Parameter="ubicacion" Type="System.String" DbType="VarChar(30)" />
+    <Parameter Name="Estado" Parameter="estado" Type="System.String" DbType="VarChar(20)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.CP_ModificarLote" Method="CP_ModificarLote">
+    <Parameter Name="IdLote" Parameter="idLote" Type="System.Int32" DbType="Int" />
+    <Parameter Name="IdGalpon" Parameter="idGalpon" Type="System.Int32" DbType="Int" />
+    <Parameter Name="IdRaza" Parameter="idRaza" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Codigo" Parameter="codigo" Type="System.String" DbType="VarChar(15)" />
+    <Parameter Name="FechaIngreso" Parameter="fechaIngreso" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="CantInicial" Parameter="cantInicial" Type="System.Int32" DbType="Int" />
+    <Parameter Name="CosInicial" Parameter="cosInicial" Type="System.Decimal" DbType="Decimal(10,2)" />
+    <Parameter Name="Estado" Parameter="estado" Type="System.String" DbType="VarChar(15)" />
+    <Parameter Name="StockActual" Parameter="stockActual" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.CP_ModificarLoteFaenado" Method="CP_ModificarLoteFaenado">
+    <Parameter Name="IdProducto" Parameter="idProducto" Type="System.Int32" DbType="Int" />
+    <Parameter Name="IdOrden" Parameter="idOrden" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Cantidad" Parameter="cantidad" Type="System.Int32" DbType="Int" />
+    <Parameter Name="PesoTotal" Parameter="pesoTotal" Type="System.Decimal" DbType="Decimal(10,2)" />
+    <Parameter Name="FechaVencimiento" Parameter="fechaVencimiento" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="StockActual" Parameter="stockActual" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.CP_ModificarOrdenFaenado" Method="CP_ModificarOrdenFaenado">
+    <Parameter Name="IdOrden" Parameter="idOrden" Type="System.Int32" DbType="Int" />
+    <Parameter Name="IdLote" Parameter="idLote" Type="System.Int32" DbType="Int" />
+    <Parameter Name="IdEmpleado" Parameter="idEmpleado" Type="System.Int32" DbType="Int" />
+    <Parameter Name="FechaFaena" Parameter="fechaFaena" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="AvesProcesadas" Parameter="avesProcesadas" Type="System.Int32" DbType="Int" />
+    <Parameter Name="PesoVivoTotal" Parameter="pesoVivoTotal" Type="System.Decimal" DbType="Decimal(10,2)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.CP_ModificarRazaAve" Method="CP_ModificarRazaAve">
+    <Parameter Name="IdRaza" Parameter="idRaza" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Nombre" Parameter="nombre" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="Origen" Parameter="origen" Type="System.String" DbType="VarChar(20)" />
+    <Parameter Name="Descripcion" Parameter="descripcion" Type="System.String" DbType="VarChar(30)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.CP_ListarVistaEmpleado" Method="CP_ListarVistaEmpleado">
+    <ElementType Name="CP_ListarVistaEmpleadoResult">
+      <Column Name="IdEmpleado" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="NombreCargo" Type="System.String" DbType="VarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="Cedula" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Nombre" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Apellido" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Ciudad" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Direccion" Type="System.String" DbType="VarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="Telefono" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Correo" Type="System.String" DbType="VarChar(30) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.CP_ListarVistaCamion" Method="CP_ListarVistaCamion">
+    <ElementType Name="CP_ListarVistaCamionResult">
+      <Column Name="IdCamion" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Chofer" Type="System.String" DbType="VarChar(21) NOT NULL" CanBeNull="false" />
+      <Column Name="Placa" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Marca" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="CapacidadKG" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.CP_ModificarCamion" Method="CP_ModificarCamion">
+    <Parameter Name="IdCamion" Parameter="idCamion" Type="System.Int32" DbType="Int" />
+    <Parameter Name="IdEmpleado" Parameter="idEmpleado" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Placa" Parameter="placa" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="Marca" Parameter="marca" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="CapacidadKG" Parameter="capacidadKG" Type="System.Decimal" DbType="Decimal(10,2)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.CP_ListarVistaLote" Method="CP_ListarVistaLote">
+    <ElementType Name="CP_ListarVistaLoteResult">
+      <Column Name="IdLote" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Galpon" Type="System.String" DbType="VarChar(15) NOT NULL" CanBeNull="false" />
+      <Column Name="Raza" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Codigo" Type="System.String" DbType="VarChar(15) NOT NULL" CanBeNull="false" />
+      <Column Name="FechaIIngreso" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="CantidadInicial" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CostoInicial" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
+      <Column Name="Estado" Type="System.String" DbType="VarChar(15) NOT NULL" CanBeNull="false" />
+      <Column Name="StockActual" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.CP_ListarVistaBitacora" Method="CP_ListarVistaBitacora">
+    <ElementType Name="CP_ListarVistaBitacoraResult">
+      <Column Name="IdBitacora" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Empleado" Type="System.String" DbType="VarChar(21) NOT NULL" CanBeNull="false" />
+      <Column Name="Lote" Type="System.String" DbType="VarChar(15) NOT NULL" CanBeNull="false" />
+      <Column Name="Fecha" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Mortalidad" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AlimentoConsumido" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
+      <Column Name="PesoPromedio" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
+      <Column Name="Observaciones" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.CP_ListarVistaOrden" Method="CP_ListarVistaOrden">
+    <ElementType Name="CP_ListarVistaOrdenResult">
+      <Column Name="IdOrden" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Lote" Type="System.String" DbType="VarChar(15) NOT NULL" CanBeNull="false" />
+      <Column Name="Empleado" Type="System.String" DbType="VarChar(21) NOT NULL" CanBeNull="false" />
+      <Column Name="FechaFaena" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="AvesProcesadas" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PesoVivoTotal" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.CP_ListarVistaVenta" Method="CP_ListarVistaVenta">
+    <ElementType Name="CP_ListarVistaVentaResult">
+      <Column Name="IdVenta" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Cliente" Type="System.String" DbType="VarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="Camion" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Vendedor" Type="System.String" DbType="VarChar(21) NOT NULL" CanBeNull="false" />
+      <Column Name="NumeroFactura" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Fecha" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="TotalVenta" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
+      <Column Name="Estado" Type="System.String" DbType="VarChar(15) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.CP_ListarVistaDetalle" Method="CP_ListarVistaDetalle">
+    <ElementType Name="CP_ListarVistaDetalleResult">
+      <Column Name="IdDetalle" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Factura" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="IdProducto" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CantidadVendida" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PrecioUnitario" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
+      <Column Name="Subtotal" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+</Database>
